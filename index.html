@@ -45,7 +45,6 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .btn-row2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:5px;}
 .btn-row2 .btn{margin:0;}
 
-/* PRÓXIMA FASE — sempre visível, cinza até liberar */
 .nx-btn{display:block;width:100%;margin-top:8px;padding:12px;border:3px dashed #D1D5DB;border-radius:14px;font-family:'Fredoka One',cursive;font-size:18px;cursor:not-allowed;background:#F3F4F6;color:#9CA3AF;box-shadow:none;transition:all .3s;text-align:center;}
 .nx-btn.show{cursor:pointer;background:var(--orange);color:#fff;box-shadow:0 4px 0 #A03D00;border:3px solid var(--orange);animation:pulse .6s ease;}
 @keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
@@ -69,20 +68,46 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .q-gap{margin-bottom:5px;}
 @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
 
-/* TELA 2 */
-.sort-list{display:flex;flex-direction:column;gap:5px;}
-.sort-item{border:3px solid #E5E7EB;border-radius:11px;padding:7px 10px;background:#F9FAFB;cursor:grab;font-size:13px;color:#1E1B4B;display:flex;align-items:center;gap:8px;transition:all .18s;user-select:none;}
-.sort-item:hover{border-color:var(--blue);background:#EFF6FF;}
-.sort-item.dragging{opacity:.4;}
-.sort-item.ok-pos{border-color:var(--green);background:#D1FAE5;}
-.sort-item.no-pos{border-color:var(--red);  background:#FEE2E2;}
-.sort-item .sic{font-size:22px;flex-shrink:0;}
-.sort-item .handle{margin-left:auto;font-size:16px;color:#CCC;}
+/* TELA 2 — DROP-SLOT DESIGN */
+.fase2-challenge{margin-bottom:12px;}
+.fase2-title{font-size:14px;color:var(--blue);margin-bottom:8px;font-family:'Nunito',sans-serif;font-weight:900;display:flex;align-items:center;justify-content:space-between;}
+.fase2-done{font-size:18px;}
+
+/* POOL: fichas arrastáveis em cima */
+.pool-area{display:flex;flex-wrap:wrap;gap:6px;min-height:44px;padding:6px;background:#F0F9FF;border-radius:10px;border:2px dashed #93C5FD;margin-bottom:10px;}
+.pool-area.drag-over{background:#DBEAFE;border-color:var(--blue);}
+.card-chip{border:3px solid #93C5FD;border-radius:10px;padding:5px 10px;background:#fff;cursor:grab;font-size:12px;color:#1E1B4B;display:inline-flex;align-items:center;gap:5px;transition:all .18s;user-select:none;white-space:nowrap;font-family:'Fredoka One',cursive;}
+.card-chip .ci{font-size:20px;}
+.card-chip:hover{border-color:var(--blue);background:#EFF6FF;transform:scale(1.04);}
+.card-chip.dragging{opacity:.35;transform:scale(.95);}
+.card-chip.placed{display:none;}
+
+/* SLOTS numerados em baixo */
+.slots-area{display:flex;flex-direction:column;gap:6px;}
+.slot-row{display:grid;grid-template-columns:36px 1fr;gap:6px;align-items:center;}
+.slot-num{width:36px;height:36px;border-radius:50%;background:var(--blue);color:#fff;font-family:'Fredoka One',cursive;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;box-shadow:0 2px 0 #0D5A94;}
+.slot-num.ok-num{background:var(--green);box-shadow:0 2px 0 #059669;}
+.slot-num.no-num{background:var(--red);  box-shadow:0 2px 0 #B91C1C;}
+.slot-box{min-height:40px;border:3px dashed #D1D5DB;border-radius:10px;background:#F9FAFB;display:flex;align-items:center;padding:4px 8px;transition:all .2s;position:relative;}
+.slot-box.drag-over{border-color:var(--blue);background:#EFF6FF;border-style:solid;}
+.slot-box.ok-slot{border-color:var(--green)!important;background:#D1FAE5!important;border-style:solid;}
+.slot-box.no-slot{border-color:var(--red)!important;  background:#FEE2E2!important;border-style:solid;animation:shake .3s;}
+.slot-box .slot-hint{font-size:11px;color:#CCC;font-family:'Nunito',sans-serif;font-weight:900;}
+.slot-chip{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:#1E1B4B;font-family:'Fredoka One',cursive;cursor:grab;}
+.slot-chip .ci{font-size:18px;}
+.slot-remove{margin-left:auto;font-size:11px;color:#AAA;cursor:pointer;padding:2px 4px;border-radius:4px;font-family:'Nunito',sans-serif;font-weight:900;}
+.slot-remove:hover{background:#FEE2E2;color:var(--red);}
+
+.check-row{display:flex;gap:6px;margin-top:8px;align-items:center;}
+.check-mini{flex:1;padding:8px;border:none;border-radius:10px;font-family:'Fredoka One',cursive;font-size:14px;cursor:pointer;background:var(--orange);color:#fff;box-shadow:0 3px 0 #A03D00;}
+.check-mini:disabled{background:#DDD;color:#999;box-shadow:none;cursor:default;}
+.check-mini:hover:not(:disabled){transform:translateY(-1px);}
 
 /* TELA 3 */
+.robo-challenge-title{font-size:13px;color:var(--blue);margin-bottom:5px;font-family:'Nunito',sans-serif;font-weight:900;}
 .robo-wrap{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;}
-.grade{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:180px;flex-shrink:0;}
-.celula{width:100%;aspect-ratio:1;border-radius:7px;background:#fff;border:2px solid #D1FAE5;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s;}
+.grade{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:175px;flex-shrink:0;}
+.celula{width:100%;aspect-ratio:1;border-radius:7px;background:#fff;border:2px solid #D1FAE5;display:flex;align-items:center;justify-content:center;font-size:17px;transition:all .3s;}
 .celula.robo   {background:#DBEAFE;border-color:#93C5FD;}
 .celula.alvo   {background:#FEF3C7;border-color:#FCD34D;}
 .celula.caminho{background:#D1FAE5;border-color:#6EE7B7;}
@@ -98,6 +123,11 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .prog-cmd:hover{opacity:.7;}
 .prog-empty{color:#555;font-size:11px;font-family:'Nunito',sans-serif;font-weight:800;}
 .cmd-label-txt{font-size:11px;color:#888;font-family:'Nunito',sans-serif;font-weight:900;margin-bottom:2px;}
+.robo-challenge-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.challenge-dots{display:flex;gap:5px;}
+.dot{width:10px;height:10px;border-radius:50%;background:#DDD;transition:all .3s;}
+.dot.active{background:var(--blue);}
+.dot.done{background:var(--green);}
 
 /* TELA 4 */
 .match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
@@ -127,7 +157,6 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .nota-msg  {font-size:18px;margin-bottom:2px;}
 .nota-sub  {font-size:12px;font-family:'Nunito',sans-serif;font-weight:800;margin-bottom:0;line-height:1.3;color:#666;}
 
-/* TABELA DETALHADA */
 .detail-table{width:100%;border-collapse:collapse;margin-bottom:12px;font-family:'Nunito',sans-serif;font-weight:800;}
 .detail-table th{background:var(--blue);color:#fff;font-size:11px;padding:5px 6px;text-align:left;}
 .detail-table th:last-child{text-align:center;}
@@ -166,51 +195,32 @@ footer span{color:var(--yellow);}
 <!-- TELA 1 -->
 <div class="screen active" id="tela1">
   <div class="banner"><span class="bi">💡</span><p>QUAL É A INSTRUÇÃO? ESCOLHA EM CADA LINHA!</p></div>
-  <div class="q-gap"><div class="opts2" id="q1opts">
-    <button class="opt" onclick="mcq(1,this,false)"><span class="oi">🌈</span>A COR É AZUL</button>
-    <button class="opt" onclick="mcq(1,this,true)"><span class="oi">💡</span>APAGUE A LUZ!</button>
-  </div></div>
-  <div class="q-gap"><div class="opts2" id="q2opts">
-    <button class="opt" onclick="mcq(2,this,true)"><span class="oi">🚪</span>FECHE A PORTA!</button>
-    <button class="opt" onclick="mcq(2,this,false)"><span class="oi">🏠</span>A CASA É GRANDE</button>
-  </div></div>
-  <div class="q-gap"><div class="opts2" id="q3opts">
-    <button class="opt" onclick="mcq(3,this,false)"><span class="oi">🐕</span>O CACHORRO</button>
-    <button class="opt" onclick="mcq(3,this,true)"><span class="oi">👆</span>APERTE O BOTÃO!</button>
-  </div></div>
-  <div class="q-gap"><div class="opts2" id="q4opts">
-    <button class="opt" onclick="mcq(4,this,true)"><span class="oi">▶️</span>LIGUE O RÁDIO!</button>
-    <button class="opt" onclick="mcq(4,this,false)"><span class="oi">🌸</span>A FLOR É BONITA</button>
-  </div></div>
+  <div id="t1-questions"></div>
   <div class="alert" id="al1"><span class="ai"></span><span class="at"></span></div>
   <button class="nx-btn" id="nx1" onclick="if(this.classList.contains('show'))goTela(2)">PRÓXIMA FASE ➜</button>
 </div>
 
 <!-- TELA 2 -->
 <div class="screen" id="tela2">
-  <div class="banner"><span class="bi">🔢</span><p>ARRASTE OS PASSOS NA ORDEM CERTA PARA ACENDER A LUZ!</p></div>
-  <div class="card">
-    <div class="sort-list" id="sort-list">
-      <div class="sort-item" draggable="true" data-order="2" data-lbl="LUZ">
-        <span class="sic">💡</span>A LUZ ACENDE!<span class="handle">⠿</span>
-      </div>
-      <div class="sort-item" draggable="true" data-order="0" data-lbl="ANDAR">
-        <span class="sic">🚶</span>VAI ATÉ O INTERRUPTOR<span class="handle">⠿</span>
-      </div>
-      <div class="sort-item" draggable="true" data-order="1" data-lbl="APERTAR">
-        <span class="sic">👆</span>APERTA O INTERRUPTOR<span class="handle">⠿</span>
-      </div>
-    </div>
-    <button class="btn btn-orange" style="margin-top:7px;" onclick="checkSort()">VERIFICAR! 🔍</button>
-    <div class="alert" id="al2"><span class="ai"></span><span class="at"></span></div>
-  </div>
+  <div class="banner"><span class="bi">🔢</span><p>ARRASTE OS PASSOS NA ORDEM CERTA!</p></div>
+  <div id="t2-challenges"></div>
+  <div class="alert" id="al2"><span class="ai"></span><span class="at"></span></div>
   <button class="nx-btn" id="nx2" onclick="if(this.classList.contains('show'))goTela(3)">PRÓXIMA FASE ➜</button>
 </div>
 
 <!-- TELA 3 -->
 <div class="screen" id="tela3">
-  <div class="banner"><span class="bi">🤖</span><p>PROGRAME O ROBÔ PARA CHEGAR NA ESTRELA ⭐ USANDO OS BOTÕES!</p></div>
+  <div class="banner"><span class="bi">🤖</span><p>PROGRAME O ROBÔ PARA CHEGAR AO DESTINO!</p></div>
   <div class="card">
+    <div class="robo-challenge-nav">
+      <span class="robo-challenge-title" id="robo-ch-title">DESAFIO 1/3</span>
+      <div class="challenge-dots" id="ch-dots">
+        <div class="dot active" id="dot0"></div>
+        <div class="dot" id="dot1"></div>
+        <div class="dot" id="dot2"></div>
+      </div>
+    </div>
+    <div id="robo-ch-desc" style="font-size:12px;color:#666;font-family:'Nunito',sans-serif;font-weight:800;margin-bottom:6px;"></div>
     <div class="robo-wrap">
       <div class="grade" id="grade"></div>
       <div class="robo-right">
@@ -230,6 +240,9 @@ footer span{color:var(--yellow);}
       </div>
     </div>
     <div class="alert" id="al3"><span class="ai"></span><span class="at"></span></div>
+    <div id="robo-nav-btns" style="margin-top:6px;display:none;">
+      <button class="btn btn-blue" onclick="nextRoboChallenge()">PRÓXIMO DESAFIO ➜</button>
+    </div>
   </div>
   <button class="nx-btn" id="nx3" onclick="if(this.classList.contains('show'))goTela(4)">PRÓXIMA FASE ➜</button>
 </div>
@@ -259,7 +272,7 @@ footer span{color:var(--yellow);}
   <button class="nx-btn" id="nx4" onclick="if(this.classList.contains('show'))showNota()">VER MINHA NOTA! 🏆</button>
 </div>
 
-</div><!-- /main -->
+</div>
 
 <!-- NOTA OVERLAY -->
 <div class="nota-overlay" id="nota-overlay">
@@ -271,8 +284,6 @@ footer span{color:var(--yellow);}
       <div class="nota-msg"   id="nota-msg"></div>
       <div class="nota-sub"   id="nota-sub"></div>
     </div>
-
-    <!-- TABELA DETALHADA PARA A PROFESSORA -->
     <table class="detail-table" id="detail-table">
       <thead>
         <tr>
@@ -284,245 +295,567 @@ footer span{color:var(--yellow);}
       </thead>
       <tbody id="detail-body"></tbody>
     </table>
-
     <button class="btn btn-blue" style="margin:0;font-size:16px;padding:10px;" onclick="restart()">🔄 JOGAR DE NOVO!</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
-<footer> Material Pedagógico – Profª Adriana Bett Terebinto</footer>
+<footer>Material Pedagógico – Profª Adriana Bett Terebinto</footer>
 
 <script>
 // ── STATE ──
 let score = 10;
-// fase 1
 let f1Erros = 0;
-// fase 2
-let sortTried=false, f2Erros=0, f2Acertou=false;
-// fase 3
-let roboPenalizado=false, f3Tentativas=0, f3Acertou=false;
-// fase 4
-let wLeft=null, wDone=0, f4Erros=0, f4Acertou=false;
+let f2Erros = 0, f2Done = [false, false, false], f2Tried = [false, false, false];
+let roboPenalizado = false, f3Tentativas = 0, f3Acertou = [false, false, false], currentRoboChallenge = 0;
+let wLeft = null, wDone = 0, f4Erros = 0, f4Acertou = false;
 
-// ── HELPERS ──
-function updScore(){document.getElementById('score-display').textContent=Math.max(0,score);}
-function setAlert(id,ok,icon,txt){
-  const el=document.getElementById(id);
-  el.className='alert show '+(ok?'ok':'no');
-  el.querySelector('.ai').textContent=icon;
-  el.querySelector('.at').textContent=txt;
-}
-function setStep(n){for(let i=0;i<4;i++)document.getElementById('stp'+i).className='step'+(i<n?' done':i===n?' active':'');}
-function goTela(n){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('tela'+n).classList.add('active');
-  setStep(n-1);
-  window.scrollTo({top:0,behavior:'smooth'});
-}
-function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
-function showNx(id){document.getElementById(id).classList.add('show');}
+// ── FASE 1 DATA ──
+const ALL_QUESTIONS = [
+  { id: 1, pairs: [
+    { icon: '🌈', text: 'A COR É AZUL', ok: false },
+    { icon: '💡', text: 'APAGUE A LUZ!', ok: true }
+  ]},
+  { id: 2, pairs: [
+    { icon: '🚪', text: 'FECHE A PORTA!', ok: true },
+    { icon: '🏠', text: 'A CASA É GRANDE', ok: false }
+  ]},
+  { id: 3, pairs: [
+    { icon: '🐕', text: 'O CACHORRO', ok: false },
+    { icon: '👆', text: 'APERTE O BOTÃO!', ok: true }
+  ]},
+  { id: 4, pairs: [
+    { icon: '▶️', text: 'LIGUE O RÁDIO!', ok: true },
+    { icon: '🌸', text: 'A FLOR É BONITA', ok: false }
+  ]},
+];
+const qDone = [false, false, false, false];
+const qOk   = [false, false, false, false];
 
-// ── TELA 1 ──
-// usar array para rastrear respostas de forma confiável
-const qDone = [false,false,false,false]; // índices 0-3 = q1-q4
-const qOk   = [false,false,false,false];
-
-function mcq(qn,btn,ok){
-  if(btn.classList.contains('dis'))return;
-  document.querySelectorAll(`#q${qn}opts .opt`).forEach(b=>b.classList.add('dis'));
-  const idx = qn - 1;
-  if(ok){
-    btn.classList.add('ok');
-    qOk[idx] = true;
-  } else {
-    btn.classList.add('no');
-    qOk[idx] = false;
-    f1Erros++; score=Math.max(0,score-2); updScore();
-    document.querySelectorAll(`#q${qn}opts .opt`).forEach(b=>{if(b.onclick.toString().includes('true'))b.classList.add('ok');});
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
   }
-  qDone[idx] = true;
-  const todasRespondidas = qDone.every(d=>d===true);
-  if(todasRespondidas){
-    const tudo = qOk.every(o=>o===true);
-    setAlert('al1', tudo, tudo?'🎉':'🤔',
-      tudo ? 'MUITO BEM! VOCÊ SABE O QUE É UMA INSTRUÇÃO!' : 'INSTRUÇÃO É UM COMANDO! VEJA AS RESPOSTAS CERTAS EM VERDE!');
-    showNx('nx1');
-  }
+  return a;
 }
 
-// ── TELA 2 ──
-let drag2=null;
-function initSort(){
-  document.querySelectorAll('.sort-item').forEach(it=>{
-    it.addEventListener('dragstart',()=>{drag2=it;setTimeout(()=>it.classList.add('dragging'),0);});
-    it.addEventListener('dragend',()=>it.classList.remove('dragging'));
-    it.addEventListener('dragover',e=>e.preventDefault());
-    it.addEventListener('drop',e=>{
-      e.preventDefault();
-      if(drag2&&drag2!==it){
-        const p=it.parentElement,all=[...p.querySelectorAll('.sort-item')],fi=all.indexOf(drag2),ti=all.indexOf(it);
-        p.insertBefore(drag2,fi<ti?it.nextSibling:it);
-      }
+function buildTela1() {
+  const container = document.getElementById('t1-questions');
+  container.innerHTML = '';
+  ALL_QUESTIONS.forEach((q, idx) => {
+    const shuffledPairs = shuffle(q.pairs);
+    const div = document.createElement('div');
+    div.className = 'q-gap';
+    div.innerHTML = `<div class="opts2" id="q${idx+1}opts">
+      ${shuffledPairs.map(p => `
+        <button class="opt" onclick="mcq(${idx+1},this,${p.ok})">
+          <span class="oi">${p.icon}</span>${p.text}
+        </button>`).join('')}
+    </div>`;
+    container.appendChild(div);
+  });
+}
+
+// ── FASE 2 DATA ──
+const SORT_CHALLENGES = [
+  {
+    id: 0,
+    title: '💡 ACENDER A LUZ',
+    items: [
+      { order: 2, lbl: 'LUZ',     icon: '💡', text: 'A LUZ ACENDE!' },
+      { order: 0, lbl: 'ANDAR',   icon: '🚶', text: 'VAI ATÉ O INTERRUPTOR' },
+      { order: 1, lbl: 'APERTAR', icon: '👆', text: 'APERTA O INTERRUPTOR' },
+    ],
+    correct: ['ANDAR', 'APERTAR', 'LUZ'],
+    errorMsg: 'A ORDEM IMPORTA! TENTE REORGANIZAR!',
+    okMsg: 'PERFEITO! ESSA É A SEQUÊNCIA CERTA!'
+  },
+  {
+    id: 1,
+    title: '🥤 BEBER ÁGUA',
+    items: [
+      { order: 1, lbl: 'ENCHER',   icon: '🚰', text: 'ENCHE O COPO COM ÁGUA' },
+      { order: 2, lbl: 'BEBER',    icon: '😊', text: 'BEBE A ÁGUA!' },
+      { order: 0, lbl: 'PEGAR',    icon: '🥤', text: 'PEGA O COPO' },
+    ],
+    correct: ['PEGAR', 'ENCHER', 'BEBER'],
+    errorMsg: 'PENSA BEM! QUE VEM ANTES, PEGAR O COPO OU ENCHER?',
+    okMsg: 'ÓTIMO! ESSA É A SEQUÊNCIA CORRETA PARA BEBER ÁGUA!'
+  },
+  {
+    id: 2,
+    title: '📬 ENVIAR UMA CARTA',
+    items: [
+      { order: 3, lbl: 'CORREIO',  icon: '📮', text: 'COLOCA NA CAIXA DO CORREIO' },
+      { order: 1, lbl: 'ESCREVER', icon: '✏️', text: 'ESCREVE A CARTA' },
+      { order: 0, lbl: 'PAPEL',    icon: '📄', text: 'PEGA O PAPEL E O ENVELOPE' },
+      { order: 2, lbl: 'ENVELOPE', icon: '✉️', text: 'COLOCA A CARTA NO ENVELOPE' },
+    ],
+    correct: ['PAPEL', 'ESCREVER', 'ENVELOPE', 'CORREIO'],
+    errorMsg: 'OPS! PRECISA ESCREVER A CARTA ANTES DE COLOCAR NO ENVELOPE!',
+    okMsg: 'MUITO BEM! VOCÊ SABE A ORDEM PARA ENVIAR UMA CARTA!'
+  }
+];
+
+// slot state: slotData[chIdx][slotIdx] = lbl or null
+let slotData = [];
+let dragChip = null; // {chIdx, lbl}
+
+function buildTela2() {
+  const container = document.getElementById('t2-challenges');
+  container.innerHTML = '';
+  slotData = SORT_CHALLENGES.map(ch => Array(ch.correct.length).fill(null));
+
+  SORT_CHALLENGES.forEach((ch, idx) => {
+    const shuffled = shuffle(ch.items);
+    const ordinals = ['1º', '2º', '3º', '4º'];
+    const div = document.createElement('div');
+    div.className = 'card fase2-challenge';
+    div.innerHTML = `
+      <div class="fase2-title">${ch.title} <span class="fase2-done" id="f2done${idx}"></span></div>
+
+      <div class="pool-area" id="pool${idx}">
+        ${shuffled.map(it => `
+          <div class="card-chip" id="chip${idx}_${it.lbl}" draggable="true"
+               data-chi="${idx}" data-lbl="${it.lbl}">
+            <span class="ci">${it.icon}</span>${it.text}
+          </div>`).join('')}
+      </div>
+
+      <div class="slots-area" id="slots${idx}">
+        ${ch.correct.map((_, si) => `
+          <div class="slot-row">
+            <div class="slot-num" id="snum${idx}_${si}">${ordinals[si]}</div>
+            <div class="slot-box" id="slot${idx}_${si}"
+                 data-chi="${idx}" data-si="${si}">
+              <span class="slot-hint">ARRASTE AQUI</span>
+            </div>
+          </div>`).join('')}
+      </div>
+
+      <div class="check-row">
+        <button class="check-mini" id="chkbtn${idx}" onclick="checkSort(${idx})">VERIFICAR 🔍</button>
+      </div>
+      <div class="alert" id="al2-${idx}"><span class="ai"></span><span class="at"></span></div>
+    `;
+    container.appendChild(div);
+  });
+
+  initSlotDrag();
+}
+
+function initSlotDrag() {
+  // Chip drag start
+  document.querySelectorAll('.card-chip').forEach(chip => {
+    chip.addEventListener('dragstart', e => {
+      dragChip = { chIdx: +chip.dataset.chi, lbl: chip.dataset.lbl };
+      chip.classList.add('dragging');
+      e.dataTransfer.effectAllowed = 'move';
+    });
+    chip.addEventListener('dragend', () => chip.classList.remove('dragging'));
+  });
+
+  // Pool drop (return chip from slot)
+  document.querySelectorAll('.pool-area').forEach(pool => {
+    pool.addEventListener('dragover', e => { e.preventDefault(); pool.classList.add('drag-over'); });
+    pool.addEventListener('dragleave', () => pool.classList.remove('drag-over'));
+    pool.addEventListener('drop', e => {
+      e.preventDefault(); pool.classList.remove('drag-over');
+      if (!dragChip) return;
+      returnChipToPool(dragChip.chIdx, dragChip.lbl);
+      dragChip = null;
+    });
+  });
+
+  // Slot drop
+  document.querySelectorAll('.slot-box').forEach(slot => {
+    slot.addEventListener('dragover', e => { e.preventDefault(); slot.classList.add('drag-over'); });
+    slot.addEventListener('dragleave', () => slot.classList.remove('drag-over'));
+    slot.addEventListener('drop', e => {
+      e.preventDefault(); slot.classList.remove('drag-over');
+      if (!dragChip) return;
+      const chIdx = +slot.dataset.chi, si = +slot.dataset.si;
+      if (dragChip.chIdx !== chIdx) return; // can't mix challenges
+      // if slot already occupied, return that chip to pool first
+      if (slotData[chIdx][si]) returnChipToPool(chIdx, slotData[chIdx][si]);
+      // place chip
+      placeChip(chIdx, si, dragChip.lbl);
+      dragChip = null;
     });
   });
 }
-const SORT_OK=['ANDAR','APERTAR','LUZ'];
-function checkSort(){
-  const items=[...document.querySelectorAll('.sort-item')];
-  const lbls=items.map(i=>i.dataset.lbl);
-  const ok=JSON.stringify(lbls)===JSON.stringify(SORT_OK);
-  items.forEach((it,i)=>{it.classList.remove('ok-pos','no-pos');it.classList.add(it.dataset.lbl===SORT_OK[i]?'ok-pos':'no-pos');});
-  if(ok){
-    f2Acertou=true;
-    setAlert('al2',true,'🎉','PERFEITO! ESSA É A SEQUÊNCIA CERTA!');
-  } else {
-    f2Erros++;
-    if(!sortTried){score=Math.max(0,score-2);updScore();sortTried=true;}
-    setAlert('al2',false,'🤔','A ORDEM IMPORTA! TENTE REORGANIZAR! (-2 PONTOS NA 1ª VEZ)');
-  }
-  // botão SEMPRE aparece após verificar (acertou ou não)
-  showNx('nx2');
+
+function placeChip(chIdx, si, lbl) {
+  // hide from pool
+  const chip = document.getElementById(`chip${chIdx}_${lbl}`);
+  if (chip) chip.classList.add('placed');
+  // put in slot
+  slotData[chIdx][si] = lbl;
+  const ch = SORT_CHALLENGES[chIdx];
+  const item = ch.items.find(i => i.lbl === lbl);
+  const slot = document.getElementById(`slot${chIdx}_${si}`);
+  slot.innerHTML = `<div class="slot-chip"><span class="ci">${item.icon}</span>${item.text}</div>
+    <span class="slot-remove" onclick="removeFromSlot(${chIdx},${si})" title="Devolver">✕</span>`;
 }
 
-// ── TELA 3 ──
-const MAP=[[0,0,0,0,2],[0,1,1,0,0],[0,0,1,0,1],[0,0,0,0,0],[0,1,0,1,0]];
-let roboR=4,roboC=0,programa=[],running=false;
-function buildGrade(){
-  const g=document.getElementById('grade');g.innerHTML='';
-  for(let r=0;r<5;r++) for(let c=0;c<5;c++){
-    const d=document.createElement('div');d.className='celula';d.id=`c${r}_${c}`;
-    if(r===roboR&&c===roboC){d.textContent='🤖';d.classList.add('robo');}
-    else if(MAP[r][c]===2){d.textContent='⭐';d.classList.add('alvo');}
-    else if(MAP[r][c]===1){d.textContent='🌳';d.classList.add('parede');}
+function returnChipToPool(chIdx, lbl) {
+  const si = slotData[chIdx].indexOf(lbl);
+  if (si !== -1) {
+    slotData[chIdx][si] = null;
+    const slot = document.getElementById(`slot${chIdx}_${si}`);
+    slot.innerHTML = '<span class="slot-hint">ARRASTE AQUI</span>';
+    slot.className = 'slot-box';
+    document.getElementById(`snum${chIdx}_${si}`).className = 'slot-num';
+  }
+  const chip = document.getElementById(`chip${chIdx}_${lbl}`);
+  if (chip) chip.classList.remove('placed');
+}
+
+function removeFromSlot(chIdx, si) {
+  const lbl = slotData[chIdx][si];
+  if (!lbl) return;
+  returnChipToPool(chIdx, lbl);
+}
+
+function checkSort(idx) {
+  const ch = SORT_CHALLENGES[idx];
+  // check all slots filled
+  if (slotData[idx].some(v => !v)) {
+    const alEl = document.getElementById(`al2-${idx}`);
+    alEl.className = 'alert show no';
+    alEl.querySelector('.ai').textContent = '⚠️';
+    alEl.querySelector('.at').textContent = 'PREENCHA TODOS OS CAMPOS ANTES DE VERIFICAR!';
+    return;
+  }
+  const ok = JSON.stringify(slotData[idx]) === JSON.stringify(ch.correct);
+  // feedback per slot
+  slotData[idx].forEach((lbl, si) => {
+    const slot = document.getElementById(`slot${idx}_${si}`);
+    const num  = document.getElementById(`snum${idx}_${si}`);
+    const correct = lbl === ch.correct[si];
+    slot.className = 'slot-box ' + (correct ? 'ok-slot' : 'no-slot');
+    num.className  = 'slot-num ' + (correct ? 'ok-num' : 'no-num');
+  });
+  const alEl = document.getElementById(`al2-${idx}`);
+  if (ok) {
+    f2Done[idx] = true;
+    alEl.className = 'alert show ok';
+    alEl.querySelector('.ai').textContent = '🎉';
+    alEl.querySelector('.at').textContent = ch.okMsg;
+    document.getElementById(`f2done${idx}`).textContent = '✅';
+    document.getElementById(`chkbtn${idx}`).disabled = true;
+    // lock remove buttons
+    document.querySelectorAll(`#slots${idx} .slot-remove`).forEach(b => b.style.display = 'none');
+    checkAllSortsDone();
+  } else {
+    f2Erros++;
+    if (!f2Tried[idx]) { score = Math.max(0, score - 1); updScore(); f2Tried[idx] = true; }
+    alEl.className = 'alert show no';
+    alEl.querySelector('.ai').textContent = '🤔';
+    alEl.querySelector('.at').textContent = ch.errorMsg + ' (-1 PONTO NA 1ª VEZ)';
+    // after 1s, reset slots so they can retry
+    setTimeout(() => {
+      ch.correct.forEach((_, si) => {
+        const lbl = slotData[idx][si];
+        if (lbl) returnChipToPool(idx, lbl);
+      });
+    }, 1400);
+  }
+}
+
+function checkAllSortsDone() {
+  const allDone = f2Done.every(d => d);
+  if (allDone) {
+    setAlert('al2', true, '🏆', 'PARABÉNS! VOCÊ ORDENOU TODAS AS SEQUÊNCIAS!');
+    showNx('nx2');
+  } else {
+    const count = f2Done.filter(Boolean).length;
+    setAlert('al2', true, '👍', `${count} DE 3 SEQUÊNCIAS CORRETAS! CONTINUE!`);
+    if (count >= 2) showNx('nx2');
+  }
+}
+
+// ── FASE 3 DATA ──
+const ROBO_CHALLENGES = [
+  {
+    title: 'DESAFIO 1/3 – CHEGUE NA ESTRELA ⭐',
+    desc: 'LEVE O ROBÔ DA POSIÇÃO INICIAL ATÉ A ESTRELA!',
+    map: [
+      [0,0,0,0,2],
+      [0,1,1,0,0],
+      [0,0,1,0,1],
+      [0,0,0,0,0],
+      [0,1,0,1,0]
+    ],
+    roboStartR: 4, roboStartC: 0,
+    target: 2
+  },
+  {
+    title: 'DESAFIO 2/3 – CHEGUE NO CORAÇÃO ❤️',
+    desc: 'O ROBÔ QUER CHEGAR NO CORAÇÃO! CUIDADO COM AS ÁRVORES!',
+    map: [
+      [0,0,1,0,0],
+      [0,0,1,0,0],
+      [0,0,0,0,0],
+      [1,0,0,1,0],
+      [0,0,0,1,3]
+    ],
+    roboStartR: 0, roboStartC: 0,
+    target: 3
+  },
+  {
+    title: 'DESAFIO 3/3 – CHEGUE NA CASA 🏠',
+    desc: 'ESTE É O MAIS DIFÍCIL! LEVE O ROBÔ ATÉ A CASA!',
+    map: [
+      [0,0,0,1,0],
+      [0,1,0,1,0],
+      [0,1,0,0,0],
+      [0,0,0,1,0],
+      [4,0,0,0,0]
+    ],
+    roboStartR: 0, roboStartC: 4,
+    target: 4
+  }
+];
+const TARGET_EMOJIS = { 2: '⭐', 3: '❤️', 4: '🏠' };
+
+let roboR, roboC, programa = [], running = false;
+let currentMap, currentRoboStart;
+
+function loadRoboChallenge(idx) {
+  const ch = ROBO_CHALLENGES[idx];
+  currentMap = ch.map;
+  roboR = ch.roboStartR;
+  roboC = ch.roboStartC;
+  programa = [];
+  document.getElementById('robo-ch-title').textContent = ch.title;
+  document.getElementById('robo-ch-desc').textContent = ch.desc;
+  document.getElementById('al3').className = 'alert';
+  document.getElementById('robo-nav-btns').style.display = 'none';
+  for (let i = 0; i < 3; i++) {
+    const dot = document.getElementById('dot' + i);
+    dot.className = 'dot' + (i < idx ? ' done' : i === idx ? ' active' : '');
+  }
+  buildGrade();
+  updProg();
+}
+
+function buildGrade() {
+  const g = document.getElementById('grade');
+  g.innerHTML = '';
+  const ch = ROBO_CHALLENGES[currentRoboChallenge];
+  const tgt = TARGET_EMOJIS[ch.target];
+  for (let r = 0; r < 5; r++) for (let c = 0; c < 5; c++) {
+    const d = document.createElement('div');
+    d.className = 'celula'; d.id = `c${r}_${c}`;
+    if (r === roboR && c === roboC) { d.textContent = '🤖'; d.classList.add('robo'); }
+    else if (currentMap[r][c] === ch.target) { d.textContent = tgt; d.classList.add('alvo'); }
+    else if (currentMap[r][c] === 1) { d.textContent = '🌳'; d.classList.add('parede'); }
     g.appendChild(d);
   }
 }
-function addCmd(sym,dir){if(programa.length>=12){showToast('MÁXIMO 12!');return;}programa.push({sym,dir});updProg();}
-function updProg(){
-  const pb=document.getElementById('prog-box');
-  if(!programa.length){pb.innerHTML='<span class="prog-empty">TOQUE NOS BOTÕES...</span>';return;}
-  pb.innerHTML=programa.map((c,i)=>`<span class="prog-cmd" onclick="removeCmd(${i})">${c.sym}</span>`).join('');
+
+function addCmd(sym, dir) {
+  if (programa.length >= 12) { showToast('MÁXIMO 12!'); return; }
+  programa.push({ sym, dir }); updProg();
 }
-function removeCmd(i){programa.splice(i,1);updProg();}
-function clearProg(){programa=[];updProg();roboR=4;roboC=0;buildGrade();document.getElementById('al3').className='alert';}
-async function runProg(){
-  if(running)return;
-  if(!programa.length){showToast('ADICIONE COMANDOS PRIMEIRO!');return;}
-  running=true; f3Tentativas++;
-  document.getElementById('al3').className='alert';
-  roboR=4;roboC=0;buildGrade();
+function updProg() {
+  const pb = document.getElementById('prog-box');
+  if (!programa.length) { pb.innerHTML = '<span class="prog-empty">TOQUE NOS BOTÕES...</span>'; return; }
+  pb.innerHTML = programa.map((c, i) => `<span class="prog-cmd" onclick="removeCmd(${i})">${c.sym}</span>`).join('');
+}
+function removeCmd(i) { programa.splice(i, 1); updProg(); }
+function clearProg() {
+  programa = [];
+  updProg();
+  const ch = ROBO_CHALLENGES[currentRoboChallenge];
+  roboR = ch.roboStartR; roboC = ch.roboStartC;
+  buildGrade();
+  document.getElementById('al3').className = 'alert';
+}
+
+async function runProg() {
+  if (running) return;
+  if (!programa.length) { showToast('ADICIONE COMANDOS PRIMEIRO!'); return; }
+  running = true; f3Tentativas++;
+  document.getElementById('al3').className = 'alert';
+  const ch = ROBO_CHALLENGES[currentRoboChallenge];
+  roboR = ch.roboStartR; roboC = ch.roboStartC;
+  buildGrade();
   await sleep(300);
-  let ganhou=false;
-  for(let i=0;i<programa.length;i++){
-    const cmd=programa[i];let nr=roboR,nc=roboC;
-    if(cmd.dir==='cima')nr--;if(cmd.dir==='baixo')nr++;
-    if(cmd.dir==='esq')nc--;if(cmd.dir==='dir')nc++;
-    if(nr<0||nr>4||nc<0||nc>4||MAP[nr][nc]===1){
-      document.getElementById(`c${roboR}_${roboC}`).style.background='#FEE2E2';
-      await sleep(400);buildGrade();await sleep(200);break;
+  let ganhou = false;
+  for (let i = 0; i < programa.length; i++) {
+    const cmd = programa[i]; let nr = roboR, nc = roboC;
+    if (cmd.dir === 'cima') nr--;
+    if (cmd.dir === 'baixo') nr++;
+    if (cmd.dir === 'esq') nc--;
+    if (cmd.dir === 'dir') nc++;
+    if (nr < 0 || nr > 4 || nc < 0 || nc > 4 || currentMap[nr][nc] === 1) {
+      document.getElementById(`c${roboR}_${roboC}`).style.background = '#FEE2E2';
+      await sleep(400); buildGrade(); await sleep(200); break;
     }
-    const old=document.getElementById(`c${roboR}_${roboC}`);old.textContent='';old.className='celula caminho';
-    roboR=nr;roboC=nc;
-    const nw=document.getElementById(`c${roboR}_${roboC}`);nw.textContent='🤖';nw.className='celula robo';
+    const old = document.getElementById(`c${roboR}_${roboC}`);
+    old.textContent = ''; old.className = 'celula caminho';
+    roboR = nr; roboC = nc;
+    const nw = document.getElementById(`c${roboR}_${roboC}`);
+    nw.textContent = '🤖'; nw.className = 'celula robo';
     await sleep(420);
-    if(MAP[roboR][roboC]===2){ganhou=true;break;}
+    if (currentMap[roboR][roboC] === ch.target) { ganhou = true; break; }
   }
-  running=false;
-  if(ganhou){
-    f3Acertou=true;
-    setAlert('al3',true,'🎉','O ROBÔ CHEGOU NA ESTRELA! SUAS INSTRUÇÕES FUNCIONARAM!');
-    showNx('nx3');
+  running = false;
+  if (ganhou) {
+    f3Acertou[currentRoboChallenge] = true;
+    setAlert('al3', true, '🎉', 'O ROBÔ CHEGOU! SUAS INSTRUÇÕES FUNCIONARAM!');
+    const isLast = currentRoboChallenge === 2;
+    if (isLast) {
+      showNx('nx3');
+    } else {
+      document.getElementById('robo-nav-btns').style.display = 'block';
+    }
   } else {
-    if(!roboPenalizado){score=Math.max(0,score-2);updScore();roboPenalizado=true;}
-    setAlert('al3',false,'🤔','O ROBÔ NÃO CHEGOU! TENTE NOVAMENTE OU VÁ PARA A PRÓXIMA FASE.');
-    // botão aparece após 1ª tentativa errada
-    setTimeout(()=>{clearProg();showNx('nx3');},1200);
+    if (!roboPenalizado) { score = Math.max(0, score - 1); updScore(); roboPenalizado = true; }
+    setAlert('al3', false, '🤔', 'O ROBÔ NÃO CHEGOU! TENTE NOVAMENTE! (-1 PONTO NA 1ª VEZ)');
+    setTimeout(() => { clearProg(); }, 1200);
   }
 }
-function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+function nextRoboChallenge() {
+  roboPenalizado = false;
+  currentRoboChallenge++;
+  if (currentRoboChallenge >= ROBO_CHALLENGES.length) {
+    showNx('nx3');
+    return;
+  }
+  loadRoboChallenge(currentRoboChallenge);
+  document.getElementById('robo-nav-btns').style.display = 'none';
+}
 
 // ── TELA 4 ──
-function pickWord(el,side){
-  if(el.classList.contains('matched')||el.classList.contains('dis'))return;
-  if(side==='L'){
-    document.querySelectorAll('[id^="wL"]').forEach(e=>{if(!e.classList.contains('matched'))e.classList.remove('sel');});
-    wLeft=el.dataset.id; el.classList.add('sel');
+function pickWord(el, side) {
+  if (el.classList.contains('matched') || el.classList.contains('dis')) return;
+  if (side === 'L') {
+    document.querySelectorAll('[id^="wL"]').forEach(e => { if (!e.classList.contains('matched')) e.classList.remove('sel'); });
+    wLeft = el.dataset.id; el.classList.add('sel');
   } else {
-    if(wLeft===null)return;
-    const lEl=document.getElementById('wL'+wLeft),ok=el.dataset.pair===wLeft;
-    if(ok){
-      lEl.classList.remove('sel');lEl.classList.add('matched');el.classList.add('matched');wDone++;
-      setAlert('al4',true,'🎉',['ISSO! INSTRUÇÃO É UM COMANDO!','CERTO! SEQUÊNCIA É A ORDEM!'][parseInt(wLeft)]);
+    if (wLeft === null) return;
+    const lEl = document.getElementById('wL' + wLeft), ok = el.dataset.pair === wLeft;
+    if (ok) {
+      lEl.classList.remove('sel'); lEl.classList.add('matched'); el.classList.add('matched'); wDone++;
+      setAlert('al4', true, '🎉', ['ISSO! INSTRUÇÃO É UM COMANDO!', 'CERTO! SEQUÊNCIA É A ORDEM!'][parseInt(wLeft)]);
     } else {
-      f4Erros++;score=Math.max(0,score-1);updScore();
-      lEl.classList.add('no');el.classList.add('no');
-      setAlert('al4',false,'🤔','OPS! TENTE OUTRO! (-1 PONTO)');
-      setTimeout(()=>{lEl.classList.remove('no','sel');el.classList.remove('no');},600);
+      f4Erros++; score = Math.max(0, score - 1); updScore();
+      lEl.classList.add('no'); el.classList.add('no');
+      setAlert('al4', false, '🤔', 'OPS! TENTE OUTRO! (-1 PONTO)');
+      setTimeout(() => { lEl.classList.remove('no', 'sel'); el.classList.remove('no'); }, 600);
     }
-    wLeft=null;
-    if(wDone===2){
-      f4Acertou=true;
-      setAlert('al4',true,'🏆','VOCÊ LIGOU TUDO CERTO! CLIQUE EM VER MINHA NOTA!');
+    wLeft = null;
+    if (wDone === 2) {
+      f4Acertou = true;
+      setAlert('al4', true, '🏆', 'VOCÊ LIGOU TUDO CERTO! CLIQUE EM VER MINHA NOTA!');
     }
-    // botão sempre liberado após qualquer tentativa
     showNx('nx4');
   }
 }
 
 // ── NOTA FINAL ──
-function showNota(){
-  const s=Math.max(0,score);
-  document.getElementById('nota-num').textContent=s;
-  let stars,msg,sub,cls;
-  if(s>=9){stars='⭐⭐⭐';msg='INCRÍVEL!';         sub='Excelente domínio das instruções!';cls='excelente';}
-  else if(s>=7){stars='⭐⭐';msg='MUITO BEM!';    sub='Boa compreensão das instruções!';  cls='bom';}
-  else if(s>=5){stars='⭐';  msg='BOM TRABALHO!'; sub='Continue praticando!';             cls='regular';}
-  else          {stars='💪'; msg='TENTE DE NOVO!';sub='Revise o conteúdo com a professora!';cls='ruim';}
-  document.getElementById('nota-stars').textContent=stars;
-  document.getElementById('nota-msg').textContent=msg;
-  document.getElementById('nota-sub').textContent=sub;
-  document.getElementById('nota-top').className='nota-top '+cls;
+function showNota() {
+  const s = Math.max(0, score);
+  document.getElementById('nota-num').textContent = s;
+  let stars, msg, sub, cls;
+  if (s >= 9) { stars = '⭐⭐⭐'; msg = 'INCRÍVEL!'; sub = 'Excelente domínio das instruções!'; cls = 'excelente'; }
+  else if (s >= 7) { stars = '⭐⭐'; msg = 'MUITO BEM!'; sub = 'Boa compreensão das instruções!'; cls = 'bom'; }
+  else if (s >= 5) { stars = '⭐'; msg = 'BOM TRABALHO!'; sub = 'Continue praticando!'; cls = 'regular'; }
+  else { stars = '💪'; msg = 'TENTE DE NOVO!'; sub = 'Revise o conteúdo com a professora!'; cls = 'ruim'; }
+  document.getElementById('nota-stars').textContent = stars;
+  document.getElementById('nota-msg').textContent = msg;
+  document.getElementById('nota-sub').textContent = sub;
+  document.getElementById('nota-top').className = 'nota-top ' + cls;
 
-  // tabela detalhada
   const f1Acertos = qOk.filter(Boolean).length;
-  const rows=[
-    {fase:'1 – O QUE É?',  ativ:'4 perguntas sobre instruções',   res:f1Acertos===4,txt:`${f1Acertos}/4 certas`, erros:f1Erros},
-    {fase:'2 – ORDEM',     ativ:'Ordenar passos para acender a luz',res:f2Acertou,   txt:f2Acertou?'CORRETO':'INCORRETO',erros:f2Erros},
-    {fase:'3 – ROBÔ',      ativ:'Programar o robozinho até a ⭐',   res:f3Acertou,   txt:f3Acertou?'CHEGOU':'NÃO CHEGOU',erros:f3Tentativas-1<0?0:f3Tentativas-1},
-    {fase:'4 – PALAVRAS',  ativ:'Ligar instrução e sequência',      res:f4Acertou,   txt:f4Acertou?'LIGOU TUDO':'INCOMPLETO',erros:f4Erros},
+  const f3Acertos = f3Acertou.filter(Boolean).length;
+  const rows = [
+    { fase: '1 – O QUE É?', ativ: '4 perguntas sobre instruções', res: f1Acertos === 4, txt: `${f1Acertos}/4 certas`, erros: f1Erros },
+    { fase: '2 – ORDEM', ativ: '3 sequências para ordenar', res: f2Done.every(Boolean), txt: `${f2Done.filter(Boolean).length}/3 corretas`, erros: f2Erros },
+    { fase: '3 – ROBÔ', ativ: '3 desafios de programar o robô', res: f3Acertos >= 2, txt: `${f3Acertos}/3 chegaram`, erros: Math.max(0, f3Tentativas - f3Acertos) },
+    { fase: '4 – PALAVRAS', ativ: 'Ligar instrução e sequência', res: f4Acertou, txt: f4Acertou ? 'LIGOU TUDO' : 'INCOMPLETO', erros: f4Erros },
   ];
-  document.getElementById('detail-body').innerHTML=rows.map(r=>`
+  document.getElementById('detail-body').innerHTML = rows.map(r => `
     <tr>
       <td><b>${r.fase}</b></td>
       <td>${r.ativ}</td>
-      <td><span class="pill ${r.res?'ok':'no'}">${r.txt}</span></td>
-      <td><span class="pill ${r.erros===0?'ok':r.erros<=2?'par':'no'}">${r.erros} erro${r.erros!==1?'s':''}</span></td>
+      <td><span class="pill ${r.res ? 'ok' : 'no'}">${r.txt}</span></td>
+      <td><span class="pill ${r.erros === 0 ? 'ok' : r.erros <= 2 ? 'par' : 'no'}">${r.erros} erro${r.erros !== 1 ? 's' : ''}</span></td>
     </tr>`).join('');
 
   document.getElementById('nota-overlay').classList.add('show');
 }
 
-// ── RESTART ──
-function restart(){
-  score=10;
-  qDone.fill(false); qOk.fill(false); f1Erros=0;
-  sortTried=false;f2Erros=0;f2Acertou=false;
-  roboPenalizado=false;f3Tentativas=0;f3Acertou=false;
-  wLeft=null;wDone=0;f4Erros=0;f4Acertou=false;
-  updScore();setStep(0);
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  document.getElementById('tela1').classList.add('active');
-  document.querySelectorAll('.opt').forEach(b=>b.classList.remove('ok','no','dis'));
-  document.querySelectorAll('.sort-item').forEach(i=>i.classList.remove('ok-pos','no-pos'));
-  document.querySelectorAll('.nx-btn').forEach(b=>b.classList.remove('show'));
-  document.querySelectorAll('.alert').forEach(a=>a.className='alert');
-  document.querySelectorAll('.mi').forEach(m=>m.classList.remove('ok','no','matched','sel'));
-  document.getElementById('nota-overlay').classList.remove('show');
-  programa=[];roboR=4;roboC=0;
-  buildGrade();updProg();
+// ── HELPERS ──
+function updScore() { document.getElementById('score-display').textContent = Math.max(0, score); }
+function setAlert(id, ok, icon, txt) {
+  const el = document.getElementById(id);
+  el.className = 'alert show ' + (ok ? 'ok' : 'no');
+  el.querySelector('.ai').textContent = icon;
+  el.querySelector('.at').textContent = txt;
+}
+function setStep(n) { for (let i = 0; i < 4; i++) document.getElementById('stp' + i).className = 'step' + (i < n ? ' done' : i === n ? ' active' : ''); }
+function goTela(n) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('tela' + n).classList.add('active');
+  setStep(n - 1);
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); setTimeout(() => t.classList.remove('show'), 2000); }
+function showNx(id) { document.getElementById(id).classList.add('show'); }
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ── FASE 1 MCQ ──
+function mcq(qn, btn, ok) {
+  if (btn.classList.contains('dis')) return;
+  document.querySelectorAll(`#q${qn}opts .opt`).forEach(b => b.classList.add('dis'));
+  const idx = qn - 1;
+  if (ok) {
+    btn.classList.add('ok'); qOk[idx] = true;
+  } else {
+    btn.classList.add('no'); qOk[idx] = false;
+    f1Erros++; score = Math.max(0, score - 2); updScore();
+    document.querySelectorAll(`#q${qn}opts .opt`).forEach(b => { if (b.getAttribute('onclick').includes('true')) b.classList.add('ok'); });
+  }
+  qDone[idx] = true;
+  if (qDone.every(d => d === true)) {
+    const tudo = qOk.every(o => o === true);
+    setAlert('al1', tudo, tudo ? '🎉' : '🤔',
+      tudo ? 'MUITO BEM! VOCÊ SABE O QUE É UMA INSTRUÇÃO!' : 'INSTRUÇÃO É UM COMANDO! VEJA AS RESPOSTAS CERTAS EM VERDE!');
+    showNx('nx1');
+  }
 }
 
-initSort();buildGrade();
+// ── RESTART ──
+function restart() {
+  score = 10; f1Erros = 0;
+  qDone.fill(false); qOk.fill(false);
+  f2Erros = 0; f2Done.fill(false); f2Tried.fill(false); slotData = [];
+  roboPenalizado = false; f3Tentativas = 0; f3Acertou.fill(false); currentRoboChallenge = 0;
+  wLeft = null; wDone = 0; f4Erros = 0; f4Acertou = false;
+  updScore(); setStep(0);
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('tela1').classList.add('active');
+  document.querySelectorAll('.nx-btn').forEach(b => b.classList.remove('show'));
+  document.querySelectorAll('.alert').forEach(a => a.className = 'alert');
+  document.querySelectorAll('.mi').forEach(m => m.classList.remove('ok', 'no', 'matched', 'sel'));
+  document.getElementById('nota-overlay').classList.remove('show');
+  buildTela1();
+  buildTela2();
+  programa = [];
+  loadRoboChallenge(0);
+}
+
+// ── INIT ──
+buildTela1();
+buildTela2();
+loadRoboChallenge(0);
 </script>
 </body>
 </html>
