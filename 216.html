@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Instruções das Máquinas</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@800;900&display=swap" rel="stylesheet">
+<style>
+:root{--blue:#1A7ABF;--orange:#E85D04;--green:#10B981;--yellow:#F5C842;--purple:#7C3AED;--red:#EF4444;--bg:#EFF6FF;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Fredoka One',cursive;background:var(--bg);min-height:100vh;display:flex;flex-direction:column;}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(circle,#1A7ABF18 2px,transparent 2px);background-size:34px 34px;pointer-events:none;z-index:0;}
+
+.header{background:var(--blue);padding:6px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 3px 0 #0D5A94;position:relative;z-index:1;}
+.hicon{font-size:26px;}
+.htitle{font-size:15px;color:#fff;line-height:1.1;}
+.hsub{font-size:10px;color:#BFDBFE;font-family:'Nunito',sans-serif;font-weight:800;}
+.hscore{margin-left:auto;background:#fff;border:2px solid #93C5FD;border-radius:8px;padding:3px 10px;font-size:14px;color:var(--blue);white-space:nowrap;}
+.hscore span{color:var(--orange);}
+
+.steps{display:flex;background:#fff;border-bottom:3px solid #E5E7EB;position:relative;z-index:1;}
+.step{flex:1;padding:4px 2px;text-align:center;font-size:9px;color:#AAA;border-bottom:3px solid transparent;font-family:'Nunito',sans-serif;font-weight:900;display:flex;flex-direction:column;align-items:center;gap:1px;transition:all .2s;}
+.step .si{font-size:16px;}
+.step.done{color:var(--green);border-bottom-color:var(--green);}
+.step.active{color:var(--blue);border-bottom-color:var(--blue);}
+
+.main{flex:1;max-width:700px;width:100%;margin:0 auto;padding:8px 12px;position:relative;z-index:1;}
+.screen{display:none;animation:pop .3s ease;}
+.screen.active{display:block;}
+@keyframes pop{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+
+.banner{background:var(--yellow);border-radius:10px;border:3px solid #E0B030;padding:5px 10px;margin-bottom:6px;display:flex;align-items:center;gap:8px;box-shadow:0 2px 0 #C89A00;}
+.banner .bi{font-size:20px;flex-shrink:0;}
+.banner p{font-size:12px;color:#5A3E00;line-height:1.2;}
+
+.card{background:#fff;border-radius:14px;border:3px solid #E5E7EB;padding:8px 10px 6px;box-shadow:0 3px 0 #E5E7EB;margin-bottom:6px;}
+
+.btn{width:100%;padding:10px;border:none;border-radius:12px;font-family:'Fredoka One',cursive;font-size:17px;cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;gap:6px;margin-top:6px;}
+.btn-blue  {background:var(--blue);  color:#fff;box-shadow:0 3px 0 #0D5A94;}
+.btn-orange{background:var(--orange);color:#fff;box-shadow:0 3px 0 #A03D00;}
+.btn-green {background:var(--green); color:#fff;box-shadow:0 3px 0 #059669;}
+.btn-gray  {background:#F3F4F6;color:#888;border:2px solid #DDD;font-size:13px;padding:7px;}
+.btn:hover{transform:translateY(-1px);}
+.btn:active{transform:translateY(2px);}
+.btn-row2{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:5px;}
+.btn-row2 .btn{margin:0;}
+
+/* PRÓXIMA FASE — sempre visível, cinza até liberar */
+.nx-btn{display:block;width:100%;margin-top:8px;padding:12px;border:3px dashed #D1D5DB;border-radius:14px;font-family:'Fredoka One',cursive;font-size:18px;cursor:not-allowed;background:#F3F4F6;color:#9CA3AF;box-shadow:none;transition:all .3s;text-align:center;}
+.nx-btn.show{cursor:pointer;background:var(--orange);color:#fff;box-shadow:0 4px 0 #A03D00;border:3px solid var(--orange);animation:pulse .6s ease;}
+@keyframes pulse{0%{transform:scale(1)}50%{transform:scale(1.03)}100%{transform:scale(1)}}
+.nx-btn.show:hover{transform:translateY(-2px);}
+.nx-btn.show:active{transform:translateY(3px);box-shadow:0 1px 0 #A03D00;}
+
+.alert{border-radius:10px;padding:6px 10px;margin-top:5px;display:none;align-items:center;gap:7px;font-size:12px;line-height:1.2;border:2px solid;}
+.alert.show{display:flex;animation:pop .3s;}
+.alert.ok{background:#D1FAE5;color:#065F46;border-color:#6EE7B7;}
+.alert.no{background:#FEE2E2;color:#991B1B;border-color:#FCA5A5;}
+.alert .ai{font-size:20px;flex-shrink:0;}
+
+/* TELA 1 */
+.opts2{display:grid;grid-template-columns:1fr 1fr;gap:6px;}
+.opt{border:3px solid #E5E7EB;border-radius:12px;padding:7px 6px;text-align:center;cursor:pointer;font-family:'Fredoka One',cursive;font-size:13px;color:#1E1B4B;background:#F9FAFB;transition:all .18s;display:flex;flex-direction:column;align-items:center;gap:3px;-webkit-tap-highlight-color:transparent;}
+.opt .oi{font-size:26px;}
+.opt:hover:not(.dis){border-color:var(--blue);background:#EFF6FF;transform:scale(1.03);}
+.opt.ok {border-color:var(--green)!important;background:#D1FAE5!important;}
+.opt.no {border-color:var(--red)!important;  background:#FEE2E2!important;animation:shake .3s;}
+.opt.dis{cursor:default;}
+.q-gap{margin-bottom:5px;}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+
+/* TELA 2 */
+.sort-list{display:flex;flex-direction:column;gap:5px;}
+.sort-item{border:3px solid #E5E7EB;border-radius:11px;padding:7px 10px;background:#F9FAFB;cursor:grab;font-size:13px;color:#1E1B4B;display:flex;align-items:center;gap:8px;transition:all .18s;user-select:none;}
+.sort-item:hover{border-color:var(--blue);background:#EFF6FF;}
+.sort-item.dragging{opacity:.4;}
+.sort-item.ok-pos{border-color:var(--green);background:#D1FAE5;}
+.sort-item.no-pos{border-color:var(--red);  background:#FEE2E2;}
+.sort-item .sic{font-size:22px;flex-shrink:0;}
+.sort-item .handle{margin-left:auto;font-size:16px;color:#CCC;}
+
+/* TELA 3 */
+.robo-wrap{display:grid;grid-template-columns:auto 1fr;gap:8px;align-items:start;}
+.grade{display:grid;grid-template-columns:repeat(5,1fr);gap:2px;width:180px;flex-shrink:0;}
+.celula{width:100%;aspect-ratio:1;border-radius:7px;background:#fff;border:2px solid #D1FAE5;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .3s;}
+.celula.robo   {background:#DBEAFE;border-color:#93C5FD;}
+.celula.alvo   {background:#FEF3C7;border-color:#FCD34D;}
+.celula.caminho{background:#D1FAE5;border-color:#6EE7B7;}
+.celula.parede {background:#F3F4F6;border-color:#E5E7EB;}
+.robo-right{display:flex;flex-direction:column;gap:5px;}
+.cmd-row{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:4px;}
+.cmd-btn{border:3px solid #E5E7EB;border-radius:9px;padding:5px 3px;cursor:pointer;font-size:18px;background:#F9FAFB;transition:all .15s;text-align:center;-webkit-tap-highlight-color:transparent;display:flex;flex-direction:column;align-items:center;gap:1px;}
+.cmd-btn .cl{font-size:8px;color:#888;font-family:'Nunito',sans-serif;font-weight:900;}
+.cmd-btn:hover{border-color:var(--blue);background:#EFF6FF;transform:scale(1.07);}
+.cmd-btn:active{transform:scale(.92);}
+.prog-box{background:#1E1B4B;border-radius:9px;padding:5px 8px;min-height:34px;display:flex;gap:3px;flex-wrap:wrap;align-items:center;}
+.prog-cmd{background:var(--blue);color:#fff;border-radius:5px;padding:2px 6px;font-size:16px;cursor:pointer;}
+.prog-cmd:hover{opacity:.7;}
+.prog-empty{color:#555;font-size:11px;font-family:'Nunito',sans-serif;font-weight:800;}
+.cmd-label-txt{font-size:11px;color:#888;font-family:'Nunito',sans-serif;font-weight:900;margin-bottom:2px;}
+
+/* TELA 4 */
+.match-wrap{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.match-col-title{font-size:11px;color:var(--blue);text-align:center;margin-bottom:5px;font-family:'Nunito',sans-serif;font-weight:900;text-transform:uppercase;}
+.mcol{display:flex;flex-direction:column;gap:6px;}
+.mi{border:3px solid #E5E7EB;border-radius:11px;padding:8px 6px;text-align:center;cursor:pointer;font-family:'Fredoka One',cursive;font-size:13px;color:#333;background:#F9FAFB;transition:all .18s;min-height:62px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;-webkit-tap-highlight-color:transparent;}
+.mi .ei{font-size:22px;}
+.mi:hover:not(.matched):not(.dis){border-color:var(--purple);background:#F5F3FF;transform:scale(1.03);}
+.mi.sel    {border-color:var(--purple)!important;background:#EDE9FE!important;box-shadow:0 0 0 3px #C4B5FD;}
+.mi.matched{border-color:var(--green)!important; background:#D1FAE5!important;cursor:default;}
+.mi.no     {border-color:var(--red)!important;   background:#FEE2E2!important;animation:shake .3s;}
+.mi-def{font-size:11px;font-family:'Nunito',sans-serif;font-weight:900;line-height:1.3;}
+
+/* NOTA OVERLAY */
+.nota-overlay{display:none;position:fixed;inset:0;background:#0009;z-index:200;align-items:center;justify-content:center;padding:16px;}
+.nota-overlay.show{display:flex;animation:fadeIn .4s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.nota-box{background:#fff;border-radius:22px;padding:18px;text-align:center;max-width:460px;width:100%;box-shadow:0 16px 48px #0006;border:4px solid var(--green);animation:pop .5s ease;}
+.nota-top{border-radius:14px;padding:14px;margin-bottom:12px;}
+.nota-top.excelente{background:linear-gradient(135deg,#ECFDF5,#D1FAE5);border:3px solid #6EE7B7;}
+.nota-top.bom      {background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border:3px solid #93C5FD;}
+.nota-top.regular  {background:linear-gradient(135deg,#FFFBEB,#FEF3C7);border:3px solid #FCD34D;}
+.nota-top.ruim     {background:linear-gradient(135deg,#FFF1F2,#FEE2E2);border:3px solid #FCA5A5;}
+.nota-stars{font-size:36px;margin-bottom:2px;}
+.nota-num  {font-size:60px;line-height:1;}
+.nota-slash{font-size:22px;color:#999;margin-bottom:3px;}
+.nota-msg  {font-size:18px;margin-bottom:2px;}
+.nota-sub  {font-size:12px;font-family:'Nunito',sans-serif;font-weight:800;margin-bottom:0;line-height:1.3;color:#666;}
+
+/* TABELA DETALHADA */
+.detail-table{width:100%;border-collapse:collapse;margin-bottom:12px;font-family:'Nunito',sans-serif;font-weight:800;}
+.detail-table th{background:var(--blue);color:#fff;font-size:11px;padding:5px 6px;text-align:left;}
+.detail-table th:last-child{text-align:center;}
+.detail-table td{font-size:12px;padding:5px 6px;border-bottom:1px solid #E5E7EB;color:#333;vertical-align:middle;}
+.detail-table td:last-child{text-align:center;}
+.detail-table tr:nth-child(even){background:#F9FAFB;}
+.pill{display:inline-block;border-radius:6px;padding:2px 8px;font-size:11px;font-weight:900;}
+.pill.ok {background:#D1FAE5;color:#065F46;}
+.pill.no {background:#FEE2E2;color:#991B1B;}
+.pill.par{background:#FEF3C7;color:#92400E;}
+
+.toast{position:fixed;bottom:14px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green);color:#fff;border-radius:10px;padding:7px 18px;font-size:14px;box-shadow:0 4px 16px #0004;transition:transform .4s cubic-bezier(.4,2,.6,1);z-index:999;white-space:nowrap;}
+.toast.show{transform:translateX(-50%) translateY(0);}
+
+footer{background:var(--blue);color:#fff;text-align:center;padding:5px;font-size:11px;font-family:'Nunito',sans-serif;font-weight:800;}
+footer span{color:var(--yellow);}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="hicon">🤖</div>
+  <div><div class="htitle">INSTRUÇÕES DAS MÁQUINAS</div><div class="hsub">AULA 2 · 2º ANO</div></div>
+  <div class="hscore">PONTOS: <span id="score-display">10</span>/10</div>
+</div>
+
+<div class="steps">
+  <div class="step active" id="stp0"><span class="si">💡</span>O QUE É?</div>
+  <div class="step"        id="stp1"><span class="si">🔢</span>ORDEM</div>
+  <div class="step"        id="stp2"><span class="si">🤖</span>ROBÔ</div>
+  <div class="step"        id="stp3"><span class="si">📖</span>PALAVRAS</div>
+</div>
+
+<div class="main">
+
+<!-- TELA 1 -->
+<div class="screen active" id="tela1">
+  <div class="banner"><span class="bi">💡</span><p>QUAL É A INSTRUÇÃO? ESCOLHA EM CADA LINHA!</p></div>
+  <div class="q-gap"><div class="opts2" id="q1opts">
+    <button class="opt" onclick="mcq(1,this,false)"><span class="oi">🌈</span>A COR É AZUL</button>
+    <button class="opt" onclick="mcq(1,this,true)"><span class="oi">💡</span>APAGUE A LUZ!</button>
+  </div></div>
+  <div class="q-gap"><div class="opts2" id="q2opts">
+    <button class="opt" onclick="mcq(2,this,true)"><span class="oi">🚪</span>FECHE A PORTA!</button>
+    <button class="opt" onclick="mcq(2,this,false)"><span class="oi">🏠</span>A CASA É GRANDE</button>
+  </div></div>
+  <div class="q-gap"><div class="opts2" id="q3opts">
+    <button class="opt" onclick="mcq(3,this,false)"><span class="oi">🐕</span>O CACHORRO</button>
+    <button class="opt" onclick="mcq(3,this,true)"><span class="oi">👆</span>APERTE O BOTÃO!</button>
+  </div></div>
+  <div class="q-gap"><div class="opts2" id="q4opts">
+    <button class="opt" onclick="mcq(4,this,true)"><span class="oi">▶️</span>LIGUE O RÁDIO!</button>
+    <button class="opt" onclick="mcq(4,this,false)"><span class="oi">🌸</span>A FLOR É BONITA</button>
+  </div></div>
+  <div class="alert" id="al1"><span class="ai"></span><span class="at"></span></div>
+  <button class="nx-btn" id="nx1" onclick="if(this.classList.contains('show'))goTela(2)">PRÓXIMA FASE ➜</button>
+</div>
+
+<!-- TELA 2 -->
+<div class="screen" id="tela2">
+  <div class="banner"><span class="bi">🔢</span><p>ARRASTE OS PASSOS NA ORDEM CERTA PARA ACENDER A LUZ!</p></div>
+  <div class="card">
+    <div class="sort-list" id="sort-list">
+      <div class="sort-item" draggable="true" data-order="2" data-lbl="LUZ">
+        <span class="sic">💡</span>A LUZ ACENDE!<span class="handle">⠿</span>
+      </div>
+      <div class="sort-item" draggable="true" data-order="0" data-lbl="ANDAR">
+        <span class="sic">🚶</span>VAI ATÉ O INTERRUPTOR<span class="handle">⠿</span>
+      </div>
+      <div class="sort-item" draggable="true" data-order="1" data-lbl="APERTAR">
+        <span class="sic">👆</span>APERTA O INTERRUPTOR<span class="handle">⠿</span>
+      </div>
+    </div>
+    <button class="btn btn-orange" style="margin-top:7px;" onclick="checkSort()">VERIFICAR! 🔍</button>
+    <div class="alert" id="al2"><span class="ai"></span><span class="at"></span></div>
+  </div>
+  <button class="nx-btn" id="nx2" onclick="if(this.classList.contains('show'))goTela(3)">PRÓXIMA FASE ➜</button>
+</div>
+
+<!-- TELA 3 -->
+<div class="screen" id="tela3">
+  <div class="banner"><span class="bi">🤖</span><p>PROGRAME O ROBÔ PARA CHEGAR NA ESTRELA ⭐ USANDO OS BOTÕES!</p></div>
+  <div class="card">
+    <div class="robo-wrap">
+      <div class="grade" id="grade"></div>
+      <div class="robo-right">
+        <div class="cmd-label-txt">COMANDOS:</div>
+        <div class="cmd-row">
+          <div class="cmd-btn" onclick="addCmd('⬆️','cima')">⬆️<span class="cl">CIMA</span></div>
+          <div class="cmd-btn" onclick="addCmd('⬇️','baixo')">⬇️<span class="cl">BAIXO</span></div>
+          <div class="cmd-btn" onclick="addCmd('⬅️','esq')">⬅️<span class="cl">ESQ</span></div>
+          <div class="cmd-btn" onclick="addCmd('➡️','dir')">➡️<span class="cl">DIR</span></div>
+        </div>
+        <div class="cmd-label-txt">SEU PROGRAMA:</div>
+        <div class="prog-box" id="prog-box"><span class="prog-empty">TOQUE NOS BOTÕES...</span></div>
+        <div class="btn-row2">
+          <button class="btn btn-gray" onclick="clearProg()">🗑️ LIMPAR</button>
+          <button class="btn btn-green" onclick="runProg()">▶️ EXECUTAR</button>
+        </div>
+      </div>
+    </div>
+    <div class="alert" id="al3"><span class="ai"></span><span class="at"></span></div>
+  </div>
+  <button class="nx-btn" id="nx3" onclick="if(this.classList.contains('show'))goTela(4)">PRÓXIMA FASE ➜</button>
+</div>
+
+<!-- TELA 4 -->
+<div class="screen" id="tela4">
+  <div class="banner"><span class="bi">📖</span><p>LIGUE CADA PALAVRA À SUA EXPLICAÇÃO!</p></div>
+  <div class="card">
+    <div class="match-wrap">
+      <div>
+        <div class="match-col-title">🔤 PALAVRA</div>
+        <div class="mcol">
+          <div class="mi" id="wL0" data-id="0" onclick="pickWord(this,'L')"><span class="ei">💡</span>INSTRUÇÃO</div>
+          <div class="mi" id="wL1" data-id="1" onclick="pickWord(this,'L')"><span class="ei">🔢</span>SEQUÊNCIA</div>
+        </div>
+      </div>
+      <div>
+        <div class="match-col-title">📝 O QUE É?</div>
+        <div class="mcol">
+          <div class="mi" id="wR0" data-pair="0" onclick="pickWord(this,'R')"><span class="mi-def">UM COMANDO QUE DIZ O QUE FAZER</span></div>
+          <div class="mi" id="wR1" data-pair="1" onclick="pickWord(this,'R')"><span class="mi-def">A ORDEM CERTA DAS INSTRUÇÕES</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="alert" id="al4"><span class="ai"></span><span class="at"></span></div>
+  </div>
+  <button class="nx-btn" id="nx4" onclick="if(this.classList.contains('show'))showNota()">VER MINHA NOTA! 🏆</button>
+</div>
+
+</div><!-- /main -->
+
+<!-- NOTA OVERLAY -->
+<div class="nota-overlay" id="nota-overlay">
+  <div class="nota-box">
+    <div class="nota-top" id="nota-top">
+      <div class="nota-stars" id="nota-stars"></div>
+      <div class="nota-num"   id="nota-num"></div>
+      <div class="nota-slash">/ 10</div>
+      <div class="nota-msg"   id="nota-msg"></div>
+      <div class="nota-sub"   id="nota-sub"></div>
+    </div>
+
+    <!-- TABELA DETALHADA PARA A PROFESSORA -->
+    <table class="detail-table" id="detail-table">
+      <thead>
+        <tr>
+          <th>FASE</th>
+          <th>ATIVIDADE</th>
+          <th>RESULTADO</th>
+          <th>ERROS</th>
+        </tr>
+      </thead>
+      <tbody id="detail-body"></tbody>
+    </table>
+
+    <button class="btn btn-blue" style="margin:0;font-size:16px;padding:10px;" onclick="restart()">🔄 JOGAR DE NOVO!</button>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+<footer>🎓 ATIVIDADE EDUCATIVA · <span>PROFE ADRIANA</span> · INSTRUÇÕES DAS MÁQUINAS · 2º ANO</footer>
+
+<script>
+// ── STATE ──
+let score = 10;
+// fase 1
+let f1Erros = 0;
+// fase 2
+let sortTried=false, f2Erros=0, f2Acertou=false;
+// fase 3
+let roboPenalizado=false, f3Tentativas=0, f3Acertou=false;
+// fase 4
+let wLeft=null, wDone=0, f4Erros=0, f4Acertou=false;
+
+// ── HELPERS ──
+function updScore(){document.getElementById('score-display').textContent=Math.max(0,score);}
+function setAlert(id,ok,icon,txt){
+  const el=document.getElementById(id);
+  el.className='alert show '+(ok?'ok':'no');
+  el.querySelector('.ai').textContent=icon;
+  el.querySelector('.at').textContent=txt;
+}
+function setStep(n){for(let i=0;i<4;i++)document.getElementById('stp'+i).className='step'+(i<n?' done':i===n?' active':'');}
+function goTela(n){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tela'+n).classList.add('active');
+  setStep(n-1);
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function showToast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2000);}
+function showNx(id){document.getElementById(id).classList.add('show');}
+
+// ── TELA 1 ──
+// usar array para rastrear respostas de forma confiável
+const qDone = [false,false,false,false]; // índices 0-3 = q1-q4
+const qOk   = [false,false,false,false];
+
+function mcq(qn,btn,ok){
+  if(btn.classList.contains('dis'))return;
+  document.querySelectorAll(`#q${qn}opts .opt`).forEach(b=>b.classList.add('dis'));
+  const idx = qn - 1;
+  if(ok){
+    btn.classList.add('ok');
+    qOk[idx] = true;
+  } else {
+    btn.classList.add('no');
+    qOk[idx] = false;
+    f1Erros++; score=Math.max(0,score-2); updScore();
+    document.querySelectorAll(`#q${qn}opts .opt`).forEach(b=>{if(b.onclick.toString().includes('true'))b.classList.add('ok');});
+  }
+  qDone[idx] = true;
+  const todasRespondidas = qDone.every(d=>d===true);
+  if(todasRespondidas){
+    const tudo = qOk.every(o=>o===true);
+    setAlert('al1', tudo, tudo?'🎉':'🤔',
+      tudo ? 'MUITO BEM! VOCÊ SABE O QUE É UMA INSTRUÇÃO!' : 'INSTRUÇÃO É UM COMANDO! VEJA AS RESPOSTAS CERTAS EM VERDE!');
+    showNx('nx1');
+  }
+}
+
+// ── TELA 2 ──
+let drag2=null;
+function initSort(){
+  document.querySelectorAll('.sort-item').forEach(it=>{
+    it.addEventListener('dragstart',()=>{drag2=it;setTimeout(()=>it.classList.add('dragging'),0);});
+    it.addEventListener('dragend',()=>it.classList.remove('dragging'));
+    it.addEventListener('dragover',e=>e.preventDefault());
+    it.addEventListener('drop',e=>{
+      e.preventDefault();
+      if(drag2&&drag2!==it){
+        const p=it.parentElement,all=[...p.querySelectorAll('.sort-item')],fi=all.indexOf(drag2),ti=all.indexOf(it);
+        p.insertBefore(drag2,fi<ti?it.nextSibling:it);
+      }
+    });
+  });
+}
+const SORT_OK=['ANDAR','APERTAR','LUZ'];
+function checkSort(){
+  const items=[...document.querySelectorAll('.sort-item')];
+  const lbls=items.map(i=>i.dataset.lbl);
+  const ok=JSON.stringify(lbls)===JSON.stringify(SORT_OK);
+  items.forEach((it,i)=>{it.classList.remove('ok-pos','no-pos');it.classList.add(it.dataset.lbl===SORT_OK[i]?'ok-pos':'no-pos');});
+  if(ok){
+    f2Acertou=true;
+    setAlert('al2',true,'🎉','PERFEITO! ESSA É A SEQUÊNCIA CERTA!');
+  } else {
+    f2Erros++;
+    if(!sortTried){score=Math.max(0,score-2);updScore();sortTried=true;}
+    setAlert('al2',false,'🤔','A ORDEM IMPORTA! TENTE REORGANIZAR! (-2 PONTOS NA 1ª VEZ)');
+  }
+  // botão SEMPRE aparece após verificar (acertou ou não)
+  showNx('nx2');
+}
+
+// ── TELA 3 ──
+const MAP=[[0,0,0,0,2],[0,1,1,0,0],[0,0,1,0,1],[0,0,0,0,0],[0,1,0,1,0]];
+let roboR=4,roboC=0,programa=[],running=false;
+function buildGrade(){
+  const g=document.getElementById('grade');g.innerHTML='';
+  for(let r=0;r<5;r++) for(let c=0;c<5;c++){
+    const d=document.createElement('div');d.className='celula';d.id=`c${r}_${c}`;
+    if(r===roboR&&c===roboC){d.textContent='🤖';d.classList.add('robo');}
+    else if(MAP[r][c]===2){d.textContent='⭐';d.classList.add('alvo');}
+    else if(MAP[r][c]===1){d.textContent='🌳';d.classList.add('parede');}
+    g.appendChild(d);
+  }
+}
+function addCmd(sym,dir){if(programa.length>=12){showToast('MÁXIMO 12!');return;}programa.push({sym,dir});updProg();}
+function updProg(){
+  const pb=document.getElementById('prog-box');
+  if(!programa.length){pb.innerHTML='<span class="prog-empty">TOQUE NOS BOTÕES...</span>';return;}
+  pb.innerHTML=programa.map((c,i)=>`<span class="prog-cmd" onclick="removeCmd(${i})">${c.sym}</span>`).join('');
+}
+function removeCmd(i){programa.splice(i,1);updProg();}
+function clearProg(){programa=[];updProg();roboR=4;roboC=0;buildGrade();document.getElementById('al3').className='alert';}
+async function runProg(){
+  if(running)return;
+  if(!programa.length){showToast('ADICIONE COMANDOS PRIMEIRO!');return;}
+  running=true; f3Tentativas++;
+  document.getElementById('al3').className='alert';
+  roboR=4;roboC=0;buildGrade();
+  await sleep(300);
+  let ganhou=false;
+  for(let i=0;i<programa.length;i++){
+    const cmd=programa[i];let nr=roboR,nc=roboC;
+    if(cmd.dir==='cima')nr--;if(cmd.dir==='baixo')nr++;
+    if(cmd.dir==='esq')nc--;if(cmd.dir==='dir')nc++;
+    if(nr<0||nr>4||nc<0||nc>4||MAP[nr][nc]===1){
+      document.getElementById(`c${roboR}_${roboC}`).style.background='#FEE2E2';
+      await sleep(400);buildGrade();await sleep(200);break;
+    }
+    const old=document.getElementById(`c${roboR}_${roboC}`);old.textContent='';old.className='celula caminho';
+    roboR=nr;roboC=nc;
+    const nw=document.getElementById(`c${roboR}_${roboC}`);nw.textContent='🤖';nw.className='celula robo';
+    await sleep(420);
+    if(MAP[roboR][roboC]===2){ganhou=true;break;}
+  }
+  running=false;
+  if(ganhou){
+    f3Acertou=true;
+    setAlert('al3',true,'🎉','O ROBÔ CHEGOU NA ESTRELA! SUAS INSTRUÇÕES FUNCIONARAM!');
+    showNx('nx3');
+  } else {
+    if(!roboPenalizado){score=Math.max(0,score-2);updScore();roboPenalizado=true;}
+    setAlert('al3',false,'🤔','O ROBÔ NÃO CHEGOU! TENTE NOVAMENTE OU VÁ PARA A PRÓXIMA FASE.');
+    // botão aparece após 1ª tentativa errada
+    setTimeout(()=>{clearProg();showNx('nx3');},1200);
+  }
+}
+function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
+
+// ── TELA 4 ──
+function pickWord(el,side){
+  if(el.classList.contains('matched')||el.classList.contains('dis'))return;
+  if(side==='L'){
+    document.querySelectorAll('[id^="wL"]').forEach(e=>{if(!e.classList.contains('matched'))e.classList.remove('sel');});
+    wLeft=el.dataset.id; el.classList.add('sel');
+  } else {
+    if(wLeft===null)return;
+    const lEl=document.getElementById('wL'+wLeft),ok=el.dataset.pair===wLeft;
+    if(ok){
+      lEl.classList.remove('sel');lEl.classList.add('matched');el.classList.add('matched');wDone++;
+      setAlert('al4',true,'🎉',['ISSO! INSTRUÇÃO É UM COMANDO!','CERTO! SEQUÊNCIA É A ORDEM!'][parseInt(wLeft)]);
+    } else {
+      f4Erros++;score=Math.max(0,score-1);updScore();
+      lEl.classList.add('no');el.classList.add('no');
+      setAlert('al4',false,'🤔','OPS! TENTE OUTRO! (-1 PONTO)');
+      setTimeout(()=>{lEl.classList.remove('no','sel');el.classList.remove('no');},600);
+    }
+    wLeft=null;
+    if(wDone===2){
+      f4Acertou=true;
+      setAlert('al4',true,'🏆','VOCÊ LIGOU TUDO CERTO! CLIQUE EM VER MINHA NOTA!');
+    }
+    // botão sempre liberado após qualquer tentativa
+    showNx('nx4');
+  }
+}
+
+// ── NOTA FINAL ──
+function showNota(){
+  const s=Math.max(0,score);
+  document.getElementById('nota-num').textContent=s;
+  let stars,msg,sub,cls;
+  if(s>=9){stars='⭐⭐⭐';msg='INCRÍVEL!';         sub='Excelente domínio das instruções!';cls='excelente';}
+  else if(s>=7){stars='⭐⭐';msg='MUITO BEM!';    sub='Boa compreensão das instruções!';  cls='bom';}
+  else if(s>=5){stars='⭐';  msg='BOM TRABALHO!'; sub='Continue praticando!';             cls='regular';}
+  else          {stars='💪'; msg='TENTE DE NOVO!';sub='Revise o conteúdo com a professora!';cls='ruim';}
+  document.getElementById('nota-stars').textContent=stars;
+  document.getElementById('nota-msg').textContent=msg;
+  document.getElementById('nota-sub').textContent=sub;
+  document.getElementById('nota-top').className='nota-top '+cls;
+
+  // tabela detalhada
+  const f1Acertos = qOk.filter(Boolean).length;
+  const rows=[
+    {fase:'1 – O QUE É?',  ativ:'4 perguntas sobre instruções',   res:f1Acertos===4,txt:`${f1Acertos}/4 certas`, erros:f1Erros},
+    {fase:'2 – ORDEM',     ativ:'Ordenar passos para acender a luz',res:f2Acertou,   txt:f2Acertou?'CORRETO':'INCORRETO',erros:f2Erros},
+    {fase:'3 – ROBÔ',      ativ:'Programar o robozinho até a ⭐',   res:f3Acertou,   txt:f3Acertou?'CHEGOU':'NÃO CHEGOU',erros:f3Tentativas-1<0?0:f3Tentativas-1},
+    {fase:'4 – PALAVRAS',  ativ:'Ligar instrução e sequência',      res:f4Acertou,   txt:f4Acertou?'LIGOU TUDO':'INCOMPLETO',erros:f4Erros},
+  ];
+  document.getElementById('detail-body').innerHTML=rows.map(r=>`
+    <tr>
+      <td><b>${r.fase}</b></td>
+      <td>${r.ativ}</td>
+      <td><span class="pill ${r.res?'ok':'no'}">${r.txt}</span></td>
+      <td><span class="pill ${r.erros===0?'ok':r.erros<=2?'par':'no'}">${r.erros} erro${r.erros!==1?'s':''}</span></td>
+    </tr>`).join('');
+
+  document.getElementById('nota-overlay').classList.add('show');
+}
+
+// ── RESTART ──
+function restart(){
+  score=10;
+  qDone.fill(false); qOk.fill(false); f1Erros=0;
+  sortTried=false;f2Erros=0;f2Acertou=false;
+  roboPenalizado=false;f3Tentativas=0;f3Acertou=false;
+  wLeft=null;wDone=0;f4Erros=0;f4Acertou=false;
+  updScore();setStep(0);
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('tela1').classList.add('active');
+  document.querySelectorAll('.opt').forEach(b=>b.classList.remove('ok','no','dis'));
+  document.querySelectorAll('.sort-item').forEach(i=>i.classList.remove('ok-pos','no-pos'));
+  document.querySelectorAll('.nx-btn').forEach(b=>b.classList.remove('show'));
+  document.querySelectorAll('.alert').forEach(a=>a.className='alert');
+  document.querySelectorAll('.mi').forEach(m=>m.classList.remove('ok','no','matched','sel'));
+  document.getElementById('nota-overlay').classList.remove('show');
+  programa=[];roboR=4;roboC=0;
+  buildGrade();updProg();
+}
+
+initSort();buildGrade();
+</script>
+</body>
+</html>
